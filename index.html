@@ -76,6 +76,23 @@ body {
 }
 .ob-btn:active { transform: scale(0.97); }
 .ob-note { font-size: 11px; color: var(--muted); text-align: center; font-family: 'Space Mono', monospace; letter-spacing: 0.04em; line-height: 1.7; }
+.ob-returning { width: 100%; max-width: 360px; margin-top: 32px; text-align: center; }
+.ob-returning-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 14px; }
+.ob-returning-list { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.ob-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px; padding: 6px 14px 6px 7px;
+  font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+  color: var(--text); cursor: pointer; transition: border-color 0.15s, background 0.15s;
+}
+.ob-chip:active { background: var(--surface2); }
+.ob-chip-dot {
+  width: 22px; height: 22px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  color: #120a0d; flex-shrink: 0;
+}
 
 /* ── APP ── */
 #app { display: none; flex-direction: column; min-height: 100vh; }
@@ -306,6 +323,10 @@ h1 {
     <input class="ob-input" id="nameInput" type="text" placeholder="e.g. Chan" maxlength="30" autocomplete="off" autocorrect="off" spellcheck="false">
     <button class="ob-btn" onclick="joinFestival()">LET'S GO →</button>
     <div class="ob-note">Your name and picks are visible to<br>everyone you share this link with.</div>
+  </div>
+  <div class="ob-returning" id="obReturning" style="display:none">
+    <div class="ob-returning-label">Or tap your name</div>
+    <div class="ob-returning-list" id="obReturningList"></div>
   </div>
 </div>
 
@@ -551,8 +572,30 @@ function subscribeToUsers() {
 // ── ONBOARDING ──
 document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key==='Enter') joinFestival(); });
 
-async function joinFestival() {
-  const val = document.getElementById('nameInput').value.trim();
+// Load existing users and show them as quick-pick chips
+async function loadReturningUsers() {
+  try {
+    const snap = await get(ref(db, 'users'));
+    const data = snap.exists() ? snap.val() : {};
+    const names = Object.values(data).map(u => u && u.name).filter(Boolean).sort((a,b)=>a.localeCompare(b));
+    const wrap = document.getElementById('obReturning');
+    const list = document.getElementById('obReturningList');
+    if (!names.length) { wrap.style.display = 'none'; return; }
+    list.innerHTML = '';
+    names.forEach(n => {
+      const initial = n.trim().charAt(0).toUpperCase() || '?';
+      const chip = document.createElement('button');
+      chip.className = 'ob-chip';
+      chip.innerHTML = `<span class="ob-chip-dot" style="background:${colorForName(n)}">${initial}</span>${n}`;
+      chip.onclick = () => joinFestival(n);
+      list.appendChild(chip);
+    });
+    wrap.style.display = 'block';
+  } catch(e) { /* offline / no data yet — just hide */ }
+}
+
+async function joinFestival(presetName) {
+  const val = (presetName != null ? presetName : document.getElementById('nameInput').value).trim();
   if (!val) { document.getElementById('nameInput').focus(); return; }
   myName = val;
   setSyncing(true);
@@ -579,7 +622,11 @@ window.changeUser = () => {
   document.getElementById('nameInput').value = '';
   document.getElementById('onboarding').classList.remove('hidden');
   document.getElementById('app').classList.remove('visible');
+  loadReturningUsers();
 };
+
+// populate quick-pick chips on first load
+loadReturningUsers();
 
 // ── TABS ──
 window.switchTab = (id, btn) => {
