@@ -345,9 +345,9 @@ h1 {
     <div class="conflicts-section">
       <div class="conflicts-title">⚡ Conflicts</div>
       <div class="conflicts-list">
-        <div class="conflict-chip"><strong>8:45p</strong> A$AP Rocky <em>vs</em> JENNIE <em>vs</em> Freddie Gibbs</div>
+        <div class="conflict-chip"><strong>7:45p</strong> JENNIE <em>vs</em> Freddie Gibbs</div>
         <div class="conflict-chip"><strong>6:45p</strong> Dominic Fike <em>vs</em> Hot Mulligan</div>
-        <div class="conflict-chip"><strong>5:45p</strong> Clipse <em>vs</em> Japanese Breakfast</div>
+        <div class="conflict-chip"><strong>5:45p</strong> Clipse <em>vs</em> Hot Mulligan</div>
       </div>
     </div>
     <div class="set-list" id="list-sun"></div>
@@ -378,71 +378,81 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // ── DATA ──
-const toMin = (h, m, pm) => { let hr = h + (pm && h!==12 ? 12 : 0); return (hr-12)*60+m; };
+// t(hour24, minute) → minutes from midnight
+const t = (h, m) => h * 60 + m;
 
 const STAGES = {
-  verizon: { label: 'Verizon',        color: '#e8ff47' },
-  grove:   { label: 'The Grove',      color: '#ff6b35' },
-  snap:    { label: 'Snapchat',       color: '#7ef8dc' },
-  school:  { label: 'School of Rock', color: '#c9a8ff' },
+  verizon: { label: 'Verizon',  color: '#e8ff47' },
+  grove:   { label: 'The Grove',color: '#ff6b35' },
+  snap:    { label: 'Snapchat', color: '#7ef8dc' },
 };
 
 const SCHEDULES = {
   fri: [
-    { id:'fri-v-1', artist:'Audrey Hobert',        stage:'verizon', s:toMin(12,0,true),  e:toMin(12,45,true) },
-    { id:'fri-g-1', artist:'Absolutely',            stage:'grove',   s:toMin(12,0,true),  e:toMin(12,45,true) },
-    { id:'fri-r-1', artist:'The Backfires',         stage:'school',  s:toMin(12,0,true),  e:toMin(12,45,true) },
-    { id:'fri-s-1', artist:'Del Water Gap',         stage:'snap',    s:toMin(1,30,true),  e:toMin(2,15,true)  },
-    { id:'fri-r-2', artist:'Old Mervs',             stage:'school',  s:toMin(1,30,true),  e:toMin(2,15,true)  },
-    { id:'fri-g-2', artist:'Confidence Man',        stage:'grove',   s:toMin(2,15,true),  e:toMin(3,0,true)   },
-    { id:'fri-v-2', artist:'King Princess',         stage:'verizon', s:toMin(2,30,true),  e:toMin(3,15,true)  },
-    { id:'fri-r-3', artist:'2Hollis',               stage:'school',  s:toMin(3,0,true),   e:toMin(3,45,true)  },
-    { id:'fri-s-2', artist:'Arcy Drive',            stage:'snap',    s:toMin(3,30,true),  e:toMin(4,15,true)  },
-    { id:'fri-g-3', artist:'The Dare',              stage:'grove',   s:toMin(4,0,true),   e:toMin(4,45,true)  },
-    { id:'fri-v-3', artist:'Mariah the Scientist',  stage:'verizon', s:toMin(4,45,true),  e:toMin(5,30,true)  },
-    { id:'fri-s-3', artist:'Turnover',              stage:'snap',    s:toMin(4,45,true),  e:toMin(5,30,true)  },
-    { id:'fri-r-4', artist:'Kids Rock For Kids',    stage:'school',  s:toMin(5,0,true),   e:toMin(5,45,true)  },
-    { id:'fri-g-4', artist:'Pierce the Veil',       stage:'grove',   s:toMin(5,30,true),  e:toMin(6,30,true)  },
-    { id:'fri-s-4', artist:'The Beths',             stage:'snap',    s:toMin(6,0,true),   e:toMin(7,0,true)   },
-    { id:'fri-v-4', artist:'KATSEYE',               stage:'verizon', s:toMin(6,35,true),  e:toMin(7,30,true)  },
-    { id:'fri-g-5', artist:'Baby Keem',             stage:'grove',   s:toMin(7,30,true),  e:toMin(8,30,true)  },
-    { id:'fri-s-5', artist:'Flipturn',              stage:'snap',    s:toMin(7,30,true),  e:toMin(8,30,true)  },
-    { id:'fri-v-5', artist:'Lorde',                 stage:'verizon', s:toMin(8,30,true),  e:toMin(10,0,true)  },
+    { id:'fri-v-1', artist:'School of Rock Queens', stage:'verizon', s:t(12,0),  e:t(12,30) },
+    { id:'fri-g-1', artist:'Kids Rock for Kids',    stage:'grove',   s:t(12,15), e:t(12,45) },
+    { id:'fri-s-1', artist:'The Backfires',         stage:'snap',    s:t(12,30), e:t(13,0)  },
+    { id:'fri-v-2', artist:'Whatmore',              stage:'verizon', s:t(13,0),  e:t(13,30) },
+    { id:'fri-g-2', artist:'Old Mervs',             stage:'grove',   s:t(13,15), e:t(13,45) },
+    { id:'fri-s-2', artist:'Absolutely',            stage:'snap',    s:t(13,30), e:t(14,0)  },
+    { id:'fri-v-3', artist:'Audrey Hobert',         stage:'verizon', s:t(14,0),  e:t(14,30) },
+    { id:'fri-g-3', artist:'Confidence Man',        stage:'grove',   s:t(14,15), e:t(15,0)  },
+    { id:'fri-s-3', artist:'King Princess',         stage:'snap',    s:t(14,30), e:t(15,15) },
+    { id:'fri-v-4', artist:'Del Water Gap',         stage:'verizon', s:t(15,15), e:t(16,0)  },
+    { id:'fri-g-4', artist:'Arcy Drive',            stage:'grove',   s:t(15,30), e:t(16,15) },
+    { id:'fri-s-4', artist:'The Dare',              stage:'snap',    s:t(16,0),  e:t(16,45) },
+    { id:'fri-v-5', artist:'Mariah the Scientist',  stage:'verizon', s:t(16,45), e:t(17,30) },
+    { id:'fri-g-5', artist:'Turnover',              stage:'grove',   s:t(16,45), e:t(17,30) },
+    { id:'fri-s-5', artist:'Pierce the Veil',       stage:'snap',    s:t(17,30), e:t(18,30) },
+    { id:'fri-g-6', artist:'The Beths',             stage:'grove',   s:t(18,0),  e:t(19,0)  },
+    { id:'fri-v-6', artist:'Katseye',               stage:'verizon', s:t(18,35), e:t(19,30) },
+    { id:'fri-s-6', artist:'Baby Keem',             stage:'snap',    s:t(19,30), e:t(20,30) },
+    { id:'fri-g-7', artist:'Flipturn',              stage:'grove',   s:t(19,30), e:t(20,30) },
+    { id:'fri-v-7', artist:'Lorde',                 stage:'verizon', s:t(20,30), e:t(22,0)  },
   ],
   sat: [
-    { id:'sat-s-1', artist:'Rachel Chinouriri',     stage:'snap',    s:toMin(12,0,true),  e:toMin(12,45,true) },
-    { id:'sat-v-1', artist:'Flowerovlove',          stage:'verizon', s:toMin(12,30,true), e:toMin(1,15,true)  },
-    { id:'sat-g-1', artist:'Hemlocke Springs',      stage:'grove',   s:toMin(1,0,true),   e:toMin(1,45,true)  },
-    { id:'sat-r-1', artist:'Del Water Gap',         stage:'school',  s:toMin(1,0,true),   e:toMin(1,45,true)  },
-    { id:'sat-v-2', artist:'Spacey Jane',           stage:'verizon', s:toMin(2,0,true),   e:toMin(2,45,true)  },
-    { id:'sat-s-2', artist:'Slayyyter',             stage:'snap',    s:toMin(2,30,true),  e:toMin(3,15,true)  },
-    { id:'sat-r-2', artist:'Geese',                 stage:'school',  s:toMin(3,0,true),   e:toMin(3,45,true)  },
-    { id:'sat-g-2', artist:'Jane Remover',          stage:'grove',   s:toMin(3,30,true),  e:toMin(4,15,true)  },
-    { id:'sat-s-3', artist:'Ravyn Lenae',           stage:'snap',    s:toMin(4,0,true),   e:toMin(4,45,true)  },
-    { id:'sat-v-3', artist:'Wet Leg',               stage:'verizon', s:toMin(4,45,true),  e:toMin(5,30,true)  },
-    { id:'sat-g-3', artist:'Snow Strippers',        stage:'grove',   s:toMin(4,45,true),  e:toMin(5,30,true)  },
-    { id:'sat-s-4', artist:'Blood Orange',          stage:'snap',    s:toMin(5,30,true),  e:toMin(6,30,true)  },
-    { id:'sat-s-5', artist:'Major Lazer',           stage:'snap',    s:toMin(6,30,true),  e:toMin(7,30,true)  },
-    { id:'sat-v-4', artist:'Kali Uchis',            stage:'verizon', s:toMin(7,30,true),  e:toMin(8,30,true)  },
-    { id:'sat-g-4', artist:'Amyl & the Sniffers',   stage:'grove',   s:toMin(7,30,true),  e:toMin(8,30,true)  },
-    { id:'sat-v-5', artist:'Stray Kids',            stage:'verizon', s:toMin(8,30,true),  e:toMin(10,0,true)  },
+    { id:'sat-v-1', artist:'Jimmyboy',              stage:'verizon', s:t(12,0),  e:t(12,30) },
+    { id:'sat-g-1', artist:'Jade LeMac',            stage:'grove',   s:t(12,15), e:t(12,45) },
+    { id:'sat-s-1', artist:'Chanpan',               stage:'snap',    s:t(12,30), e:t(13,0)  },
+    { id:'sat-v-2', artist:'Radio Free Alice',      stage:'verizon', s:t(13,0),  e:t(13,30) },
+    { id:'sat-g-2', artist:'Villanelle',            stage:'grove',   s:t(13,15), e:t(13,45) },
+    { id:'sat-s-2', artist:'Flowerovlove',          stage:'snap',    s:t(13,30), e:t(14,0)  },
+    { id:'sat-v-3', artist:'Wisp',                  stage:'verizon', s:t(14,0),  e:t(14,30) },
+    { id:'sat-g-3', artist:'Midnight Generation',   stage:'grove',   s:t(14,15), e:t(15,0)  },
+    { id:'sat-s-3', artist:'Spacey Jane',           stage:'snap',    s:t(14,30), e:t(15,15) },
+    { id:'sat-v-4', artist:'2Hollis',               stage:'verizon', s:t(15,15), e:t(15,55) },
+    { id:'sat-g-4', artist:'Jane Remover',          stage:'grove',   s:t(15,50), e:t(16,30) },
+    { id:'sat-s-4', artist:'Ravyn Lenae',           stage:'snap',    s:t(16,0),  e:t(16,45) },
+    { id:'sat-v-5', artist:'Wet Leg',               stage:'verizon', s:t(16,45), e:t(17,30) },
+    { id:'sat-g-5', artist:'Snow Strippers',        stage:'grove',   s:t(16,50), e:t(17,35) },
+    { id:'sat-s-5', artist:'Blood Orange',          stage:'snap',    s:t(17,30), e:t(18,30) },
+    { id:'sat-g-6', artist:'Thee Sacred Souls',     stage:'grove',   s:t(18,0),  e:t(19,0)  },
+    { id:'sat-v-6', artist:'Major Lazer',           stage:'verizon', s:t(18,30), e:t(19,30) },
+    { id:'sat-s-6', artist:'Kali Uchis',            stage:'snap',    s:t(19,30), e:t(20,30) },
+    { id:'sat-g-7', artist:'Amyl and the Sniffers', stage:'grove',   s:t(19,30), e:t(20,30) },
+    { id:'sat-v-7', artist:'Stray Kids',            stage:'verizon', s:t(20,30), e:t(22,0)  },
   ],
   sun: [
-    { id:'sun-r-1', artist:'Between Friends',       stage:'school',  s:toMin(12,30,true), e:toMin(1,15,true)  },
-    { id:'sun-g-1', artist:'Hemlocke Springs',      stage:'grove',   s:toMin(1,30,true),  e:toMin(2,15,true)  },
-    { id:'sun-s-1', artist:'Rachel Chinouriri',     stage:'snap',    s:toMin(1,0,true),   e:toMin(1,45,true)  },
-    { id:'sun-r-2', artist:'Holly Humberstone',     stage:'school',  s:toMin(2,0,true),   e:toMin(2,45,true)  },
-    { id:'sun-s-2', artist:'Slayyyter',             stage:'snap',    s:toMin(2,0,true),   e:toMin(2,45,true)  },
-    { id:'sun-v-1', artist:'Between Friends',       stage:'verizon', s:toMin(2,30,true),  e:toMin(3,15,true)  },
-    { id:'sun-v-2', artist:'Holly Humberstone',     stage:'verizon', s:toMin(3,15,true),  e:toMin(4,0,true)   },
-    { id:'sun-g-2', artist:'Geese',                 stage:'grove',   s:toMin(3,30,true),  e:toMin(4,15,true)  },
-    { id:'sun-v-3', artist:'Japanese Breakfast',    stage:'verizon', s:toMin(4,0,true),   e:toMin(4,45,true)  },
-    { id:'sun-g-3', artist:'Clipse',                stage:'grove',   s:toMin(5,45,true),  e:toMin(6,45,true)  },
-    { id:'sun-s-3', artist:'Hot Mulligan',          stage:'snap',    s:toMin(6,15,true),  e:toMin(7,15,true)  },
-    { id:'sun-v-4', artist:'Dominic Fike',          stage:'verizon', s:toMin(6,45,true),  e:toMin(7,45,true)  },
-    { id:'sun-g-4', artist:'JENNIE',                stage:'grove',   s:toMin(7,45,true),  e:toMin(8,45,true)  },
-    { id:'sun-s-4', artist:'Freddie Gibbs & Alchemist', stage:'snap', s:toMin(7,45,true), e:toMin(8,45,true)  },
-    { id:'sun-v-5', artist:'A$AP Rocky',            stage:'verizon', s:toMin(8,45,true),  e:toMin(10,0,true)  },
+    { id:'sun-v-1', artist:'School of Rock New York', stage:'verizon', s:t(11,40), e:t(12,10) },
+    { id:'sun-s-1', artist:'Evening Elephants',     stage:'snap',    s:t(12,10), e:t(12,40) },
+    { id:'sun-g-1', artist:'Hannah Jadagu',         stage:'grove',   s:t(12,30), e:t(13,0)  },
+    { id:'sun-v-2', artist:'Lexa Gates',            stage:'verizon', s:t(12,40), e:t(13,10) },
+    { id:'sun-s-2', artist:'Hemlocke Springs',      stage:'snap',    s:t(13,10), e:t(13,45) },
+    { id:'sun-g-2', artist:'After',                 stage:'grove',   s:t(13,30), e:t(14,0)  },
+    { id:'sun-v-3', artist:'Slayyyter',             stage:'verizon', s:t(13,45), e:t(14,30) },
+    { id:'sun-s-3', artist:'Rachel Chinouriri',     stage:'snap',    s:t(14,30), e:t(15,15) },
+    { id:'sun-g-3', artist:'Between Friends',       stage:'grove',   s:t(14,30), e:t(15,15) },
+    { id:'sun-v-4', artist:'Holly Humberstone',     stage:'verizon', s:t(15,15), e:t(16,0)  },
+    { id:'sun-g-4', artist:'FCUKERS',               stage:'grove',   s:t(15,45), e:t(16,30) },
+    { id:'sun-s-4', artist:'Japanese Breakfast',    stage:'snap',    s:t(16,0),  e:t(16,45) },
+    { id:'sun-v-5', artist:'Geese',                 stage:'verizon', s:t(16,45), e:t(17,45) },
+    { id:'sun-g-5', artist:'Khamari',               stage:'grove',   s:t(17,0),  e:t(17,45) },
+    { id:'sun-s-5', artist:'Clipse',                stage:'snap',    s:t(17,45), e:t(18,45) },
+    { id:'sun-g-6', artist:'Hot Mulligan',          stage:'grove',   s:t(18,15), e:t(19,15) },
+    { id:'sun-v-6', artist:'Dominic Fike',          stage:'verizon', s:t(18,45), e:t(19,45) },
+    { id:'sun-s-6', artist:'Jennie',                stage:'snap',    s:t(19,45), e:t(20,45) },
+    { id:'sun-g-7', artist:'Freddie Gibbs & The Alchemist', stage:'grove', s:t(19,45), e:t(20,45) },
+    { id:'sun-v-7', artist:'A$AP Rocky',            stage:'verizon', s:t(20,45), e:t(22,0)  },
   ],
 };
 
@@ -452,10 +462,9 @@ const SCHEDULES = {
 const ALL_SETS = {};
 ['fri','sat','sun'].forEach(day => SCHEDULES[day].forEach(s => { ALL_SETS[s.id] = {...s, day}; }));
 
-const START_HOUR = 12;
+// times stored as minutes-from-midnight (24h)
 const fmt = m => {
-  const t = m + START_HOUR * 60;
-  let h = Math.floor(t/60), mn = t%60;
+  let h = Math.floor(m/60), mn = m%60;
   const ap = h >= 12 ? 'p' : 'a';
   if (h > 12) h -= 12;
   if (h === 0) h = 12;
