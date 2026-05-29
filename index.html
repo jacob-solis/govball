@@ -3,25 +3,25 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
-<meta name="theme-color" content="#0c0c0c">
+<meta name="theme-color" content="#120a0d">
 <title>Gov Ball 2026 — Set Times</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  --bg: #0c0c0c;
-  --surface: #181818;
-  --surface2: #202020;
-  --border: #282828;
+  --bg: #120a0d;
+  --surface: #1f1418;
+  --surface2: #2a1a20;
+  --border: #3a2530;
   --text: #f0ece3;
   --muted: #666;
   --muted2: #444;
-  --accent: #e8ff47;
-  --accent2: #ff6b35;
-  --verizon: #e8ff47;
-  --grove: #ff6b35;
-  --snapchat: #7ef8dc;
-  --school: #c9a8ff;
+  --accent: #ff5a8a;
+  --accent2: #ff3b5c;
+  --verizon: #ff8fa3;
+  --grove: #ff5a5f;
+  --snapchat: #ffb3c6;
+  --school: #ff7eb6;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
@@ -69,7 +69,7 @@ body {
 .ob-input:focus { border-color: var(--accent); }
 .ob-input::placeholder { color: var(--muted2); }
 .ob-btn {
-  background: var(--accent); color: #0c0c0c; border: none;
+  background: var(--accent); color: #120a0d; border: none;
   font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 0.1em;
   padding: 16px; border-radius: 6px; cursor: pointer;
   transition: filter 0.15s, transform 0.1s;
@@ -126,7 +126,7 @@ h1 {
 }
 .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .nav-tab .badge {
-  display: inline-block; background: var(--accent); color: #0c0c0c;
+  display: inline-block; background: var(--accent); color: #120a0d;
   font-size: 8px; font-weight: 700; border-radius: 10px;
   padding: 1px 5px; margin-left: 5px; vertical-align: middle;
 }
@@ -245,7 +245,7 @@ h1 {
 }
 .person-card-header:active { background: var(--surface2); }
 .person-card-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.06em; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.you-tag { font-family: 'Space Mono', monospace; font-size: 8px; background: var(--accent); color: #0c0c0c; padding: 2px 7px; border-radius: 2px; font-weight: 700; flex-shrink: 0; }
+.you-tag { font-family: 'Space Mono', monospace; font-size: 8px; background: var(--accent); color: #120a0d; padding: 2px 7px; border-radius: 2px; font-weight: 700; flex-shrink: 0; }
 .person-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); flex-shrink: 0; }
 .person-chevron { color: var(--muted2); font-size: 12px; flex-shrink: 0; transition: transform 0.2s; }
 .person-card.open .person-chevron { transform: rotate(180deg); }
@@ -382,9 +382,9 @@ const db = getDatabase(app);
 const t = (h, m) => h * 60 + m;
 
 const STAGES = {
-  verizon: { label: 'Verizon',  color: '#e8ff47' },
-  grove:   { label: 'The Grove',color: '#ff6b35' },
-  snap:    { label: 'Snapchat', color: '#7ef8dc' },
+  verizon: { label: 'Verizon',  color: '#ff8fa3' },
+  grove:   { label: 'The Grove',color: '#ff5a5f' },
+  snap:    { label: 'Snapchat', color: '#ffb3c6' },
 };
 
 const SCHEDULES = {
@@ -596,7 +596,7 @@ function buildSetRow(set) {
     <div class="set-check">
       <div class="check-icon">
         <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
-          <path d="M1 5l3.5 3.5L11 1" stroke="#0c0c0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M1 5l3.5 3.5L11 1" stroke="#120a0d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </div>
     </div>`;
