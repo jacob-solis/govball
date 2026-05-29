@@ -233,18 +233,22 @@ h1 {
 .my-remove:active { color: var(--accent2); }
 .my-empty { padding: 60px 16px; text-align: center; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; line-height: 2; }
 
-/* avatar circles for who else is going */
-.my-avatars { display: flex; align-items: center; flex-shrink: 0; padding-right: 4px; }
-.my-avatars .avatar {
+/* avatar circles for who else is going (used on day tabs + Mine tab) */
+.avatars, .my-avatars { display: flex; align-items: center; flex-shrink: 0; padding-right: 4px; }
+.set-avatars { display: flex; align-items: center; flex-shrink: 0; padding: 0 2px 0 4px; }
+.avatar {
   width: 24px; height: 24px; border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
   font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
-  color: var(--text); background: var(--surface2);
-  border: 1.5px solid var(--surface);
+  color: #120a0d; background: var(--surface2);
+  border: 1.5px solid var(--bg);
   margin-left: -7px; flex-shrink: 0;
+  box-sizing: border-box;
 }
-.my-avatars .avatar:first-child { margin-left: 0; }
-.my-avatars .avatar-more { background: var(--accent); color: var(--bg); font-size: 9px; }
+.avatar:first-child { margin-left: 0; }
+.avatar-more { background: var(--surface2) !important; color: var(--text); font-size: 9px; border-color: var(--bg); }
+/* smaller circles on the dense day-tab rows */
+.set-avatars .avatar { width: 21px; height: 21px; font-size: 9px; margin-left: -6px; }
 
 /* ── PEOPLE ── */
 .people-header-bar { padding: 16px 16px 12px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
@@ -487,6 +491,37 @@ const fmt = m => {
 // ── STATE ──
 let myName = '', myPicks = new Set(), allUsers = {}, unsubscribe = null, toastTimer = null;
 
+// per-user color: stable hash of name → red/pink palette
+const AVATAR_COLORS = [
+  '#ff5a8a', '#ff3b5c', '#ff8fa3', '#ff5a5f', '#ffb3c6',
+  '#e84393', '#c0395b', '#ff7eb6', '#d6336c', '#ff9aa2',
+  '#b5174e', '#ff6b81'
+];
+function colorForName(name) {
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) >>> 0;
+  return AVATAR_COLORS[h % AVATAR_COLORS.length];
+}
+// returns sorted list of OTHER people going to a set
+function othersGoing(setId) {
+  return Object.keys(allUsers)
+    .filter(n => n !== myName && Array.isArray(allUsers[n]) && allUsers[n].includes(setId))
+    .sort((a,b) => a.localeCompare(b));
+}
+// builds the overlapping avatar circles markup
+function avatarsHtml(names, max = 4) {
+  if (!names.length) return '';
+  let html = '';
+  names.slice(0, max).forEach(n => {
+    const initial = n.trim().charAt(0).toUpperCase() || '?';
+    html += `<div class="avatar" style="background:${colorForName(n)}" title="${n}">${initial}</div>`;
+  });
+  if (names.length > max) {
+    html += `<div class="avatar avatar-more" title="${names.slice(max).join(', ')}">+${names.length - max}</div>`;
+  }
+  return `<div class="avatars" title="${names.join(', ')}">${html}</div>`;
+}
+
 const syncDot = document.getElementById('syncDot');
 const setSyncing = v => syncDot.className = v ? 'syncing' : '';
 const setError = () => syncDot.className = 'error';
@@ -587,6 +622,7 @@ function buildList(day) {
   });
 }
 
+// builds overlapping initial-avatars for everyone else going to a set
 function buildSetRow(set) {
   const sm = STAGES[set.stage];
   const isMine = myPicks.has(set.id);
@@ -607,6 +643,7 @@ function buildSetRow(set) {
         <span class="set-going-text${goers>0?' has-goers':''}" id="going-${set.id}">${goers>0 ? goers+' going' : ''}</span>
       </div>
     </div>
+    <div class="set-avatars" id="avatars-${set.id}">${avatarsHtml(othersGoing(set.id), 3)}</div>
     <div class="set-check">
       <div class="check-icon">
         <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
@@ -651,6 +688,8 @@ function refreshCounts() {
       el.textContent = g > 0 ? g+' going' : '';
       el.className = 'set-going-text' + (g > 0 ? ' has-goers' : '');
     }
+    const av = document.getElementById('avatars-'+id);
+    if (av) av.innerHTML = avatarsHtml(othersGoing(id), 3);
     const row = document.getElementById('set-'+id);
     if (row) row.classList.toggle('mine', myPicks.has(id));
   });
@@ -679,31 +718,13 @@ function renderMine() {
       const row = document.createElement('div');
       row.className = 'my-set-row';
 
-      // who else (not me) is going to this set
-      const others = Object.keys(allUsers)
-        .filter(n => n !== myName && Array.isArray(allUsers[n]) && allUsers[n].includes(set.id))
-        .sort((a,b) => a.localeCompare(b));
-
-      const MAX_SHOWN = 4;
-      let avatarsHtml = '';
-      others.slice(0, MAX_SHOWN).forEach(n => {
-        const initial = n.trim().charAt(0).toUpperCase() || '?';
-        avatarsHtml += `<div class="avatar" title="${n}">${initial}</div>`;
-      });
-      if (others.length > MAX_SHOWN) {
-        avatarsHtml += `<div class="avatar avatar-more" title="${others.slice(MAX_SHOWN).join(', ')}">+${others.length - MAX_SHOWN}</div>`;
-      }
-      const avatarsBlock = others.length
-        ? `<div class="my-avatars" title="${others.join(', ')}">${avatarsHtml}</div>`
-        : '';
-
       row.innerHTML = `
         <div class="my-bar" style="background:${sm.color}"></div>
         <div class="my-info">
           <div class="my-artist">${set.artist}</div>
           <div class="my-meta">${sm.label} · ${fmt(set.s)}–${fmt(set.e)}</div>
         </div>
-        ${avatarsBlock}
+        ${avatarsHtml(othersGoing(set.id), 4)}
         <button class="my-remove" onclick="toggleSet('${set.id}').then(()=>renderMine())">×</button>`;
       container.appendChild(row);
     });
