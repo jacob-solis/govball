@@ -22,11 +22,8 @@
   --grove: #ff6b35;
   --snapchat: #7ef8dc;
   --school: #c9a8ff;
-  --hour-w: 96px;
-  --row-h: 74px;
-  --label-w: 130px;
 }
-* { box-sizing: border-box; margin: 0; padding: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; }
 body {
   background: var(--bg);
@@ -34,6 +31,8 @@ body {
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
+  /* prevent text size adjustment on iOS */
+  -webkit-text-size-adjust: 100%;
 }
 
 /* ── ONBOARDING ── */
@@ -48,7 +47,7 @@ body {
 #onboarding.hidden { opacity: 0; transform: translateY(-20px); pointer-events: none; }
 .ob-title {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(72px, 18vw, 140px);
+  font-size: clamp(80px, 22vw, 140px);
   line-height: 0.88; text-align: center;
   background: linear-gradient(135deg, #f0ece3 30%, var(--accent) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -56,28 +55,27 @@ body {
 .ob-sub {
   font-family: 'Space Mono', monospace;
   font-size: 11px; letter-spacing: 0.2em; color: var(--muted);
-  margin: 12px 0 40px; text-align: center;
+  margin: 12px 0 40px; text-align: center; line-height: 1.8;
 }
 .ob-sub span { color: var(--accent); }
-.ob-form { width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 14px; }
+.ob-form { width: 100%; max-width: 360px; display: flex; flex-direction: column; gap: 14px; }
 .ob-label { font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; }
 .ob-input {
   background: var(--surface); border: 1px solid var(--border);
   color: var(--text); font-family: 'DM Sans', sans-serif;
-  font-size: 18px; font-weight: 500; padding: 14px 16px;
-  border-radius: 4px; outline: none; transition: border-color 0.2s; width: 100%;
+  font-size: 20px; font-weight: 500; padding: 16px;
+  border-radius: 6px; outline: none; transition: border-color 0.2s; width: 100%;
 }
 .ob-input:focus { border-color: var(--accent); }
 .ob-input::placeholder { color: var(--muted2); }
 .ob-btn {
   background: var(--accent); color: #0c0c0c; border: none;
-  font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.1em;
-  padding: 14px; border-radius: 4px; cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif; font-size: 24px; letter-spacing: 0.1em;
+  padding: 16px; border-radius: 6px; cursor: pointer;
   transition: filter 0.15s, transform 0.1s;
 }
-.ob-btn:hover { filter: brightness(1.1); }
-.ob-btn:active { transform: scale(0.98); }
-.ob-note { font-size: 11px; color: var(--muted); text-align: center; margin-top: 4px; font-family: 'Space Mono', monospace; letter-spacing: 0.05em; line-height: 1.6; }
+.ob-btn:active { transform: scale(0.97); }
+.ob-note { font-size: 11px; color: var(--muted); text-align: center; font-family: 'Space Mono', monospace; letter-spacing: 0.04em; line-height: 1.7; }
 
 /* ── APP ── */
 #app { display: none; flex-direction: column; min-height: 100vh; }
@@ -85,174 +83,226 @@ body {
 
 /* ── HEADER ── */
 header {
-  padding: 24px 20px 0;
-  display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 20px 16px 0;
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
 }
-.header-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.22em; color: var(--muted); text-transform: uppercase; }
+.header-left { min-width: 0; }
+.header-eyebrow { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
 h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(42px, 11vw, 88px); line-height: 0.88;
+  font-size: clamp(48px, 13vw, 88px); line-height: 0.88;
   background: linear-gradient(135deg, var(--text) 40%, var(--accent) 100%);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
-.header-meta { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.12em; margin-top: 4px; }
+.header-meta { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 0.1em; margin-top: 4px; }
 .header-meta span { color: var(--accent); }
 .user-badge {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 3px; padding: 8px 14px;
-  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em;
-  color: var(--muted); cursor: pointer; transition: border-color 0.2s; white-space: nowrap;
+  border-radius: 6px; padding: 8px 12px; flex-shrink: 0;
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.08em;
+  color: var(--muted); cursor: pointer; transition: border-color 0.2s;
+  text-align: right; max-width: 120px;
 }
-.user-badge strong { color: var(--accent); display: block; font-size: 13px; }
+.user-badge-label { font-size: 8px; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 2px; }
+.user-badge strong { color: var(--accent); display: block; font-size: 14px; font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.06em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .user-badge:hover { border-color: var(--accent); }
 
 /* ── NAV ── */
 .nav {
   display: flex; border-bottom: 1px solid var(--border);
-  margin-top: 20px; padding: 0 20px;
+  margin-top: 16px;
   overflow-x: auto; -webkit-overflow-scrolling: touch;
+  padding: 0 16px;
+  /* no scrollbar on mobile */
+  scrollbar-width: none;
 }
 .nav::-webkit-scrollbar { display: none; }
 .nav-tab {
   background: none; border: none;
-  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted); padding: 10px 18px; cursor: pointer; white-space: nowrap;
+  font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); padding: 10px 14px; cursor: pointer; white-space: nowrap;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
-  transition: color 0.15s, border-color 0.15s;
+  transition: color 0.15s, border-color 0.15s; flex-shrink: 0;
 }
-.nav-tab:hover { color: var(--text); }
 .nav-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 .nav-tab .badge {
   display: inline-block; background: var(--accent); color: #0c0c0c;
   font-size: 8px; font-weight: 700; border-radius: 10px;
-  padding: 1px 5px; margin-left: 6px; vertical-align: middle;
+  padding: 1px 5px; margin-left: 5px; vertical-align: middle;
 }
 
 /* ── PANELS ── */
 .panel { display: none; flex: 1; }
-.panel.active { display: block; animation: fadeUp 0.25s ease; }
-@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-/* ── LEGEND ── */
-.legend { display: flex; gap: 16px; flex-wrap: wrap; padding: 16px 20px 0; }
-.legend-item { display: flex; align-items: center; gap: 7px; font-size: 10px; font-family: 'Space Mono', monospace; color: var(--muted); letter-spacing: 0.08em; }
-.legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.panel.active { display: block; animation: fadeUp 0.2s ease; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ── CONFLICTS ── */
-.conflicts-section { padding: 16px 20px 0; }
-.conflicts-title { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 10px; }
-.conflicts-list { display: flex; flex-wrap: wrap; gap: 8px; }
-.conflict-chip { background: var(--surface); border: 1px solid var(--border); border-radius: 3px; padding: 7px 12px; font-size: 10px; font-family: 'Space Mono', monospace; color: var(--text); line-height: 1.5; }
+.conflicts-section { padding: 14px 16px 0; }
+.conflicts-title { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; }
+.conflicts-list { display: flex; flex-wrap: wrap; gap: 6px; }
+.conflict-chip {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 4px;
+  padding: 6px 10px; font-size: 10px; font-family: 'Space Mono', monospace;
+  color: var(--text); line-height: 1.5;
+}
 .conflict-chip strong { color: var(--accent2); }
 .conflict-chip em { color: var(--muted); font-style: normal; }
 
-/* ── TIMELINE ── */
-.timeline-scroll { overflow-x: auto; padding: 20px 20px 40px; -webkit-overflow-scrolling: touch; }
-.timeline-scroll::-webkit-scrollbar { height: 3px; }
-.timeline-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
-.timeline-inner { position: relative; min-width: calc(var(--label-w) + var(--hour-w) * 10); }
-.hour-header { display: flex; margin-left: var(--label-w); border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--bg); z-index: 10; }
-.hour-cell { width: var(--hour-w); flex-shrink: 0; font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); padding: 7px 0 7px 8px; border-left: 1px solid var(--border); letter-spacing: 0.04em; }
-.stage-row { display: flex; height: var(--row-h); border-bottom: 1px solid var(--border); position: relative; }
-.stage-label { width: var(--label-w); flex-shrink: 0; display: flex; align-items: center; padding: 0 12px; position: sticky; left: 0; background: var(--bg); z-index: 5; border-right: 1px solid var(--border); }
-.stage-name { font-family: 'Bebas Neue', sans-serif; font-size: 14px; letter-spacing: 0.08em; line-height: 1; }
-.stage-track { position: relative; flex: 1; }
-.stage-track::before { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(90deg, transparent, transparent calc(var(--hour-w) - 1px), var(--border) calc(var(--hour-w) - 1px), var(--border) var(--hour-w)); pointer-events: none; }
+/* ── SET LIST ── */
+.set-list { padding: 14px 16px 80px; display: flex; flex-direction: column; gap: 6px; }
 
-/* ── SET BLOCK ── */
-.set {
-  position: absolute; top: 6px; bottom: 6px; border-radius: 4px;
-  display: flex; flex-direction: column; justify-content: center;
-  padding: 0 9px; cursor: pointer; overflow: hidden;
-  transition: filter 0.12s, transform 0.12s; user-select: none;
+.time-block { margin-bottom: 4px; }
+.time-label {
+  font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.18em;
+  color: var(--muted); text-transform: uppercase; padding: 10px 0 6px;
+  border-bottom: 1px solid var(--border); margin-bottom: 6px;
 }
-.set:hover { filter: brightness(1.12); transform: scaleY(1.06); z-index: 20; }
-.set.mine { box-shadow: 0 0 0 2px #0c0c0c, 0 0 0 4px var(--text); z-index: 15; }
-.set-artist { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2; color: rgba(0,0,0,0.82); text-transform: uppercase; letter-spacing: 0.04em; }
-.set-time { font-family: 'DM Sans', sans-serif; font-size: 8px; color: rgba(0,0,0,0.55); white-space: nowrap; margin-top: 1px; font-weight: 500; }
-.set-going { font-family: 'Space Mono', monospace; font-size: 8px; font-weight: 700; color: rgba(0,0,0,0.65); white-space: nowrap; margin-top: 2px; }
-.set.grove .set-artist { color: rgba(255,255,255,0.88); }
-.set.grove .set-time { color: rgba(255,255,255,0.55); }
-.set.grove .set-going { color: rgba(255,255,255,0.65); }
-.set.verizon { background: var(--verizon); }
-.set.grove    { background: var(--grove); }
-.set.snapchat { background: var(--snapchat); }
-.set.school   { background: var(--school); }
+
+.set-row {
+  display: flex; align-items: center; gap: 0;
+  background: var(--surface); border-radius: 6px;
+  overflow: hidden; cursor: pointer;
+  transition: background 0.12s;
+  border: 2px solid transparent;
+  position: relative;
+}
+.set-row:active { background: var(--surface2); }
+.set-row.mine { border-color: var(--text); }
+
+.set-stage-bar { width: 4px; flex-shrink: 0; align-self: stretch; }
+.set-main { flex: 1; padding: 12px 12px 12px 14px; min-width: 0; }
+.set-artist-name {
+  font-family: 'Space Mono', monospace; font-weight: 700; font-size: 12px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  color: var(--text); line-height: 1.3;
+  /* allow wrapping on mobile */
+  white-space: normal; word-break: break-word;
+}
+.set-meta {
+  display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  margin-top: 4px;
+}
+.set-stage-pill {
+  font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.08em;
+  padding: 2px 7px; border-radius: 10px; font-weight: 700;
+  color: rgba(0,0,0,0.75); white-space: nowrap;
+}
+.set-time-text { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.set-going-text { font-size: 10px; color: var(--muted); font-family: 'Space Mono', monospace; }
+.set-going-text.has-goers { color: var(--accent2); }
+
+.set-check {
+  width: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  align-self: stretch;
+}
+.check-icon {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 2px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.set-row.mine .check-icon {
+  background: var(--accent); border-color: var(--accent);
+}
+.check-icon svg { display: none; }
+.set-row.mine .check-icon svg { display: block; }
 
 /* ── MY SCHEDULE ── */
-.my-sched-header { padding: 20px 20px 0; display: flex; align-items: baseline; justify-content: space-between; }
-.my-sched-title { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
-.my-sched-name { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--accent); letter-spacing: 0.06em; }
-.my-day-group { margin: 16px 20px 0; }
-.my-day-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
-.my-set-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 4px; background: var(--surface); margin-bottom: 6px; transition: background 0.15s; }
-.my-set-row:hover { background: var(--surface2); }
-.my-set-bar { width: 4px; height: 36px; border-radius: 2px; flex-shrink: 0; }
-.my-set-info { flex: 1; }
-.my-set-artist { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
-.my-set-meta { font-size: 11px; color: var(--muted); margin-top: 2px; }
-.my-set-remove { background: none; border: 1px solid var(--border); color: var(--muted); font-family: 'Space Mono', monospace; font-size: 9px; padding: 4px 8px; border-radius: 2px; cursor: pointer; letter-spacing: 0.08em; transition: all 0.15s; white-space: nowrap; }
-.my-set-remove:hover { border-color: var(--accent2); color: var(--accent2); }
-.my-empty { padding: 60px 20px; text-align: center; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.1em; line-height: 2; }
-.my-sched-body { padding-bottom: 40px; }
+.my-header { padding: 16px 16px 0; }
+.my-title { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+.my-name { font-family: 'Bebas Neue', sans-serif; font-size: 32px; color: var(--accent); letter-spacing: 0.06em; line-height: 1.1; }
+.my-list { padding: 8px 16px 80px; }
+.my-day-label { font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.18em; color: var(--muted); text-transform: uppercase; padding: 12px 0 8px; border-bottom: 1px solid var(--border); margin-bottom: 8px; }
+.my-set-row {
+  display: flex; align-items: center; gap: 0;
+  background: var(--surface); border-radius: 6px; overflow: hidden;
+  margin-bottom: 6px;
+}
+.my-bar { width: 4px; flex-shrink: 0; align-self: stretch; }
+.my-info { flex: 1; padding: 12px 12px 12px 14px; min-width: 0; }
+.my-artist { font-family: 'Space Mono', monospace; font-weight: 700; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text); white-space: normal; word-break: break-word; }
+.my-meta { font-size: 11px; color: var(--muted); margin-top: 3px; }
+.my-remove {
+  background: none; border: none; color: var(--muted2);
+  font-size: 20px; padding: 0 14px; cursor: pointer; align-self: stretch;
+  display: flex; align-items: center; transition: color 0.15s;
+  font-weight: 300;
+}
+.my-remove:active { color: var(--accent2); }
+.my-empty { padding: 60px 16px; text-align: center; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; line-height: 2; }
 
 /* ── PEOPLE ── */
-.people-header { padding: 20px 20px 14px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
-.people-grid { padding: 0 20px 40px; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.person-card { background: var(--surface); border: 1px solid var(--border); border-radius: 5px; padding: 16px; transition: border-color 0.15s; }
+.people-header-bar { padding: 16px 16px 12px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
+.people-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 10px; }
+.person-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; }
 .person-card.is-me { border-color: var(--accent); }
-.person-card:hover { border-color: var(--muted2); }
-.person-name { font-family: 'Bebas Neue', sans-serif; font-size: 20px; letter-spacing: 0.06em; display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
-.you-tag { font-family: 'Space Mono', monospace; font-size: 8px; letter-spacing: 0.1em; background: var(--accent); color: #0c0c0c; padding: 2px 6px; border-radius: 2px; font-weight: 700; }
-.person-sets { display: flex; flex-direction: column; gap: 6px; }
-.person-set-item { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 3px; background: var(--surface2); }
-.ps-dot { width: 7px; height: 7px; border-radius: 2px; flex-shrink: 0; }
-.ps-info { flex: 1; min-width: 0; }
-.ps-artist { font-family: 'Space Mono', monospace; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.ps-meta { font-size: 9px; color: var(--muted); margin-top: 1px; font-family: 'Space Mono', monospace; }
-.person-empty { font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; padding: 4px 0; }
+.person-card-header {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; cursor: pointer;
+  background: var(--surface);
+}
+.person-card-header:active { background: var(--surface2); }
+.person-card-name { font-family: 'Bebas Neue', sans-serif; font-size: 22px; letter-spacing: 0.06em; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.you-tag { font-family: 'Space Mono', monospace; font-size: 8px; background: var(--accent); color: #0c0c0c; padding: 2px 7px; border-radius: 2px; font-weight: 700; flex-shrink: 0; }
+.person-count { font-family: 'Space Mono', monospace; font-size: 9px; color: var(--muted); flex-shrink: 0; }
+.person-chevron { color: var(--muted2); font-size: 12px; flex-shrink: 0; transition: transform 0.2s; }
+.person-card.open .person-chevron { transform: rotate(180deg); }
+.person-sets-list { display: none; border-top: 1px solid var(--border); }
+.person-card.open .person-sets-list { display: block; }
+.person-set-item { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+.person-set-item:last-child { border-bottom: none; }
+.ps-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
+.ps-artist { font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-meta { font-size: 9px; color: var(--muted); font-family: 'Space Mono', monospace; white-space: nowrap; flex-shrink: 0; }
+.person-empty { padding: 12px 14px; font-size: 11px; color: var(--muted); font-family: 'Space Mono', monospace; }
 
 /* ── TOAST ── */
-#toast { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--surface); border: 1px solid var(--border); color: var(--text); font-family: 'Space Mono', monospace; font-size: 10px; letter-spacing: 0.1em; padding: 10px 20px; border-radius: 4px; z-index: 999; transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s; opacity: 0; white-space: nowrap; }
+#toast {
+  position: fixed; bottom: max(24px, env(safe-area-inset-bottom, 24px)); left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--surface2); border: 1px solid var(--border);
+  color: var(--text); font-family: 'Space Mono', monospace; font-size: 10px;
+  letter-spacing: 0.08em; padding: 12px 20px; border-radius: 20px; z-index: 999;
+  transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.3s;
+  opacity: 0; white-space: nowrap; max-width: calc(100vw - 48px);
+  overflow: hidden; text-overflow: ellipsis;
+}
 #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 #toast .tn { color: var(--accent); }
 
 /* ── SYNC DOT ── */
-#syncDot { position: fixed; top: 14px; right: 14px; width: 6px; height: 6px; border-radius: 50%; background: var(--muted2); transition: background 0.3s; z-index: 500; }
+#syncDot { position: fixed; top: 12px; right: 12px; width: 6px; height: 6px; border-radius: 50%; background: transparent; transition: background 0.3s; z-index: 500; }
 #syncDot.syncing { background: var(--accent); }
 #syncDot.error { background: var(--accent2); }
-
-@media (max-width: 600px) {
-  :root { --hour-w: 68px; --label-w: 96px; --row-h: 64px; }
-  h1 { font-size: 52px; }
-  .set-time { display: none; }
-  .set-artist { font-size: 8px; }
-}
 </style>
 </head>
 <body>
 
+<!-- ONBOARDING -->
 <div id="onboarding">
   <div class="ob-title">GOV<br>BALL</div>
-  <div class="ob-sub"><span>2026</span> &nbsp;·&nbsp; Jun 5–7 &nbsp;·&nbsp; Flushing Meadows, Queens</div>
+  <div class="ob-sub"><span>2026</span> &nbsp;·&nbsp; Jun 5–7<br>Flushing Meadows, Queens</div>
   <div class="ob-form">
     <div class="ob-label">Your name</div>
     <input class="ob-input" id="nameInput" type="text" placeholder="e.g. Chan" maxlength="30" autocomplete="off" autocorrect="off" spellcheck="false">
     <button class="ob-btn" onclick="joinFestival()">LET'S GO →</button>
-    <div class="ob-note">Your name and schedule are visible to everyone<br>you share this link with.</div>
+    <div class="ob-note">Your name and picks are visible to<br>everyone you share this link with.</div>
   </div>
 </div>
 
+<!-- APP -->
 <div id="app">
-  <div id="syncDot" title="Sync status"></div>
+  <div id="syncDot"></div>
   <header>
-    <div>
-      <div class="header-eyebrow">Flushing Meadows · Queens, NY</div>
+    <div class="header-left">
+      <div class="header-eyebrow">Flushing Meadows · Queens</div>
       <h1>GOV BALL</h1>
-      <div class="header-meta"><span>2026</span> &nbsp;·&nbsp; June 5–7 &nbsp;·&nbsp; Set Times</div>
+      <div class="header-meta"><span>2026</span> &nbsp;·&nbsp; June 5–7</div>
     </div>
     <div class="user-badge" onclick="changeUser()">
-      <div style="font-size:9px;letter-spacing:0.15em;color:var(--muted);margin-bottom:2px">GOING AS</div>
+      <div class="user-badge-label">GOING AS</div>
       <strong id="userBadgeName">—</strong>
     </div>
   </header>
@@ -261,18 +311,11 @@ h1 {
     <button class="nav-tab active" onclick="switchTab('fri',this)">Fri 6/5</button>
     <button class="nav-tab" onclick="switchTab('sat',this)">Sat 6/6</button>
     <button class="nav-tab" onclick="switchTab('sun',this)">Sun 6/7</button>
-    <button class="nav-tab" onclick="switchTab('mine',this)">My Schedule <span class="badge" id="myBadge">0</span></button>
+    <button class="nav-tab" onclick="switchTab('mine',this)">Mine <span class="badge" id="myBadge">0</span></button>
     <button class="nav-tab" onclick="switchTab('people',this)">People <span class="badge" id="peopleBadge">0</span></button>
   </div>
 
   <div class="panel active" id="panel-fri">
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--verizon)"></div>Verizon</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--grove)"></div>The Grove</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--snapchat)"></div>Snapchat</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--school)"></div>School of Rock</div>
-      <div class="legend-item" style="margin-left:6px"><div style="width:12px;height:12px;border-radius:2px;background:transparent;border:2px solid var(--text);flex-shrink:0"></div>= you're going</div>
-    </div>
     <div class="conflicts-section">
       <div class="conflicts-title">⚡ Conflicts</div>
       <div class="conflicts-list">
@@ -282,16 +325,10 @@ h1 {
         <div class="conflict-chip"><strong>4:00p</strong> The Dare <em>vs</em> Arcy Drive</div>
       </div>
     </div>
-    <div class="timeline-scroll"><div class="timeline-inner" id="grid-fri"><div class="hour-header" id="hours-fri"></div></div></div>
+    <div class="set-list" id="list-fri"></div>
   </div>
 
   <div class="panel" id="panel-sat">
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--verizon)"></div>Verizon</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--grove)"></div>The Grove</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--snapchat)"></div>Snapchat</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--school)"></div>School of Rock</div>
-    </div>
     <div class="conflicts-section">
       <div class="conflicts-title">⚡ Conflicts</div>
       <div class="conflicts-list">
@@ -301,16 +338,10 @@ h1 {
         <div class="conflict-chip"><strong>4:00p</strong> Ravyn Lenae <em>vs</em> Jane Remover</div>
       </div>
     </div>
-    <div class="timeline-scroll"><div class="timeline-inner" id="grid-sat"><div class="hour-header" id="hours-sat"></div></div></div>
+    <div class="set-list" id="list-sat"></div>
   </div>
 
   <div class="panel" id="panel-sun">
-    <div class="legend">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--verizon)"></div>Verizon</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--grove)"></div>The Grove</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--snapchat)"></div>Snapchat</div>
-      <div class="legend-item"><div class="legend-dot" style="background:var(--school)"></div>School of Rock</div>
-    </div>
     <div class="conflicts-section">
       <div class="conflicts-title">⚡ Conflicts</div>
       <div class="conflicts-list">
@@ -319,22 +350,20 @@ h1 {
         <div class="conflict-chip"><strong>5:45p</strong> Clipse <em>vs</em> Japanese Breakfast</div>
       </div>
     </div>
-    <div class="timeline-scroll"><div class="timeline-inner" id="grid-sun"><div class="hour-header" id="hours-sun"></div></div></div>
+    <div class="set-list" id="list-sun"></div>
   </div>
 
   <div class="panel" id="panel-mine">
-    <div class="my-sched-header">
-      <div>
-        <div class="my-sched-title">Schedule for</div>
-        <div class="my-sched-name" id="mySchedName">—</div>
-      </div>
+    <div class="my-header">
+      <div class="my-title">Schedule for</div>
+      <div class="my-name" id="mySchedName">—</div>
     </div>
-    <div class="my-sched-body" id="mySchedBody"></div>
+    <div class="my-list" id="myList"></div>
   </div>
 
   <div class="panel" id="panel-people">
-    <div class="people-header" id="peopleHeader">Loading...</div>
-    <div class="people-grid" id="peopleGrid"></div>
+    <div class="people-header-bar" id="peopleHeader">Loading...</div>
+    <div class="people-list" id="peopleList"></div>
   </div>
 </div>
 
@@ -344,168 +373,135 @@ h1 {
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase, ref, set, onValue, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// ── FIREBASE CONFIG ──
-const firebaseConfig = {
-  databaseURL: "https://govball-1c8b4-default-rtdb.firebaseio.com"
-};
+const firebaseConfig = { databaseURL: "https://govball-1c8b4-default-rtdb.firebaseio.com" };
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
 // ── DATA ──
-const toMin = (h, m, pm) => { let hr = h + (pm && h!==12?12:0); return (hr-12)*60+m; };
+const toMin = (h, m, pm) => { let hr = h + (pm && h!==12 ? 12 : 0); return (hr-12)*60+m; };
+
 const STAGES = {
-  verizon: { label: 'Verizon',       cls: 'verizon', color: '#e8ff47' },
-  grove:   { label: 'The Grove',      cls: 'grove',   color: '#ff6b35' },
-  snap:    { label: 'Snapchat',       cls: 'snapchat',color: '#7ef8dc' },
-  school:  { label: 'School of Rock', cls: 'school',  color: '#c9a8ff' },
+  verizon: { label: 'Verizon',        color: '#e8ff47' },
+  grove:   { label: 'The Grove',      color: '#ff6b35' },
+  snap:    { label: 'Snapchat',       color: '#7ef8dc' },
+  school:  { label: 'School of Rock', color: '#c9a8ff' },
 };
+
 const SCHEDULES = {
-  fri: {
-    verizon: [
-      { id:'fri-v-1', artist:'Audrey Hobert',        s:toMin(12,0,true),  e:toMin(12,45,true) },
-      { id:'fri-v-2', artist:'King Princess',         s:toMin(2,30,true),  e:toMin(3,15,true)  },
-      { id:'fri-v-3', artist:'Mariah the Scientist',  s:toMin(4,45,true),  e:toMin(5,30,true)  },
-      { id:'fri-v-4', artist:'KATSEYE',               s:toMin(6,35,true),  e:toMin(7,30,true)  },
-      { id:'fri-v-5', artist:'Lorde',                  s:toMin(8,30,true),  e:toMin(10,0,true)  },
-    ],
-    grove: [
-      { id:'fri-g-1', artist:'Absolutely',        s:toMin(12,0,true),  e:toMin(12,45,true) },
-      { id:'fri-g-2', artist:'Confidence Man',    s:toMin(2,15,true),  e:toMin(3,0,true)   },
-      { id:'fri-g-3', artist:'The Dare',          s:toMin(4,0,true),   e:toMin(4,45,true)  },
-      { id:'fri-g-4', artist:'Pierce the Veil',   s:toMin(5,30,true),  e:toMin(6,30,true)  },
-      { id:'fri-g-5', artist:'Baby Keem',         s:toMin(7,30,true),  e:toMin(8,30,true)  },
-    ],
-    snap: [
-      { id:'fri-s-1', artist:'Del Water Gap',  s:toMin(1,30,true),  e:toMin(2,15,true) },
-      { id:'fri-s-2', artist:'Arcy Drive',     s:toMin(3,30,true),  e:toMin(4,15,true) },
-      { id:'fri-s-3', artist:'Turnover',       s:toMin(4,45,true),  e:toMin(5,30,true) },
-      { id:'fri-s-4', artist:'The Beths',      s:toMin(6,0,true),   e:toMin(7,0,true)  },
-      { id:'fri-s-5', artist:'Flipturn',       s:toMin(7,30,true),  e:toMin(8,30,true) },
-    ],
-    school: [
-      { id:'fri-r-1', artist:'The Backfires',      s:toMin(12,0,true),  e:toMin(12,45,true) },
-      { id:'fri-r-2', artist:'Old Mervs',          s:toMin(1,30,true),  e:toMin(2,15,true)  },
-      { id:'fri-r-3', artist:'2Hollis',            s:toMin(3,0,true),   e:toMin(3,45,true)  },
-      { id:'fri-r-4', artist:'Kids Rock For Kids', s:toMin(5,0,true),   e:toMin(5,45,true)  },
-    ],
-  },
-  sat: {
-    verizon: [
-      { id:'sat-v-1', artist:'Flowerovlove', s:toMin(12,30,true), e:toMin(1,15,true)  },
-      { id:'sat-v-2', artist:'Spacey Jane',  s:toMin(2,0,true),   e:toMin(2,45,true)  },
-      { id:'sat-v-3', artist:'Wet Leg',      s:toMin(4,45,true),  e:toMin(5,30,true)  },
-      { id:'sat-v-4', artist:'Kali Uchis',   s:toMin(7,30,true),  e:toMin(8,30,true)  },
-      { id:'sat-v-5', artist:'Stray Kids',   s:toMin(8,30,true),  e:toMin(10,0,true)  },
-    ],
-    grove: [
-      { id:'sat-g-1', artist:'Hemlocke Springs',    s:toMin(1,0,true),   e:toMin(1,45,true)  },
-      { id:'sat-g-2', artist:'Jane Remover',         s:toMin(3,30,true),  e:toMin(4,15,true)  },
-      { id:'sat-g-3', artist:'Snow Strippers',       s:toMin(4,45,true),  e:toMin(5,30,true)  },
-      { id:'sat-g-4', artist:'Amyl & the Sniffers', s:toMin(7,30,true),  e:toMin(8,30,true)  },
-    ],
-    snap: [
-      { id:'sat-s-1', artist:'Rachel Chinouriri', s:toMin(12,0,true),  e:toMin(12,45,true) },
-      { id:'sat-s-2', artist:'Slayyyter',         s:toMin(2,30,true),  e:toMin(3,15,true)  },
-      { id:'sat-s-3', artist:'Ravyn Lenae',       s:toMin(4,0,true),   e:toMin(4,45,true)  },
-      { id:'sat-s-4', artist:'Blood Orange',      s:toMin(5,30,true),  e:toMin(6,30,true)  },
-      { id:'sat-s-5', artist:'Major Lazer',       s:toMin(6,30,true),  e:toMin(7,30,true)  },
-    ],
-    school: [
-      { id:'sat-r-1', artist:'Del Water Gap', s:toMin(1,0,true), e:toMin(1,45,true) },
-      { id:'sat-r-2', artist:'Geese',          s:toMin(3,0,true), e:toMin(3,45,true) },
-    ],
-  },
-  sun: {
-    verizon: [
-      { id:'sun-v-1', artist:'Between Friends',    s:toMin(2,30,true),  e:toMin(3,15,true)  },
-      { id:'sun-v-2', artist:'Holly Humberstone',  s:toMin(3,15,true),  e:toMin(4,0,true)   },
-      { id:'sun-v-3', artist:'Japanese Breakfast', s:toMin(4,0,true),   e:toMin(4,45,true)  },
-      { id:'sun-v-4', artist:'Dominic Fike',       s:toMin(6,45,true),  e:toMin(7,45,true)  },
-      { id:'sun-v-5', artist:'A$AP Rocky',         s:toMin(8,45,true),  e:toMin(10,0,true)  },
-    ],
-    grove: [
-      { id:'sun-g-1', artist:'Hemlocke Springs', s:toMin(1,30,true),  e:toMin(2,15,true)  },
-      { id:'sun-g-2', artist:'Geese',            s:toMin(3,30,true),  e:toMin(4,15,true)  },
-      { id:'sun-g-3', artist:'Clipse',           s:toMin(5,45,true),  e:toMin(6,45,true)  },
-      { id:'sun-g-4', artist:'JENNIE',           s:toMin(7,45,true),  e:toMin(8,45,true)  },
-    ],
-    snap: [
-      { id:'sun-s-1', artist:'Rachel Chinouriri',          s:toMin(1,0,true),   e:toMin(1,45,true)  },
-      { id:'sun-s-2', artist:'Slayyyter',                  s:toMin(2,0,true),   e:toMin(2,45,true)  },
-      { id:'sun-s-3', artist:'Hot Mulligan',               s:toMin(6,15,true),  e:toMin(7,15,true)  },
-      { id:'sun-s-4', artist:'Freddie Gibbs & Alchemist',  s:toMin(7,45,true),  e:toMin(8,45,true)  },
-    ],
-    school: [
-      { id:'sun-r-1', artist:'Between Friends',   s:toMin(12,30,true), e:toMin(1,15,true) },
-      { id:'sun-r-2', artist:'Holly Humberstone', s:toMin(2,0,true),   e:toMin(2,45,true) },
-    ],
-  },
+  fri: [
+    { id:'fri-v-1', artist:'Audrey Hobert',        stage:'verizon', s:toMin(12,0,true),  e:toMin(12,45,true) },
+    { id:'fri-g-1', artist:'Absolutely',            stage:'grove',   s:toMin(12,0,true),  e:toMin(12,45,true) },
+    { id:'fri-r-1', artist:'The Backfires',         stage:'school',  s:toMin(12,0,true),  e:toMin(12,45,true) },
+    { id:'fri-s-1', artist:'Del Water Gap',         stage:'snap',    s:toMin(1,30,true),  e:toMin(2,15,true)  },
+    { id:'fri-r-2', artist:'Old Mervs',             stage:'school',  s:toMin(1,30,true),  e:toMin(2,15,true)  },
+    { id:'fri-g-2', artist:'Confidence Man',        stage:'grove',   s:toMin(2,15,true),  e:toMin(3,0,true)   },
+    { id:'fri-v-2', artist:'King Princess',         stage:'verizon', s:toMin(2,30,true),  e:toMin(3,15,true)  },
+    { id:'fri-r-3', artist:'2Hollis',               stage:'school',  s:toMin(3,0,true),   e:toMin(3,45,true)  },
+    { id:'fri-s-2', artist:'Arcy Drive',            stage:'snap',    s:toMin(3,30,true),  e:toMin(4,15,true)  },
+    { id:'fri-g-3', artist:'The Dare',              stage:'grove',   s:toMin(4,0,true),   e:toMin(4,45,true)  },
+    { id:'fri-v-3', artist:'Mariah the Scientist',  stage:'verizon', s:toMin(4,45,true),  e:toMin(5,30,true)  },
+    { id:'fri-s-3', artist:'Turnover',              stage:'snap',    s:toMin(4,45,true),  e:toMin(5,30,true)  },
+    { id:'fri-r-4', artist:'Kids Rock For Kids',    stage:'school',  s:toMin(5,0,true),   e:toMin(5,45,true)  },
+    { id:'fri-g-4', artist:'Pierce the Veil',       stage:'grove',   s:toMin(5,30,true),  e:toMin(6,30,true)  },
+    { id:'fri-s-4', artist:'The Beths',             stage:'snap',    s:toMin(6,0,true),   e:toMin(7,0,true)   },
+    { id:'fri-v-4', artist:'KATSEYE',               stage:'verizon', s:toMin(6,35,true),  e:toMin(7,30,true)  },
+    { id:'fri-g-5', artist:'Baby Keem',             stage:'grove',   s:toMin(7,30,true),  e:toMin(8,30,true)  },
+    { id:'fri-s-5', artist:'Flipturn',              stage:'snap',    s:toMin(7,30,true),  e:toMin(8,30,true)  },
+    { id:'fri-v-5', artist:'Lorde',                 stage:'verizon', s:toMin(8,30,true),  e:toMin(10,0,true)  },
+  ],
+  sat: [
+    { id:'sat-s-1', artist:'Rachel Chinouriri',     stage:'snap',    s:toMin(12,0,true),  e:toMin(12,45,true) },
+    { id:'sat-v-1', artist:'Flowerovlove',          stage:'verizon', s:toMin(12,30,true), e:toMin(1,15,true)  },
+    { id:'sat-g-1', artist:'Hemlocke Springs',      stage:'grove',   s:toMin(1,0,true),   e:toMin(1,45,true)  },
+    { id:'sat-r-1', artist:'Del Water Gap',         stage:'school',  s:toMin(1,0,true),   e:toMin(1,45,true)  },
+    { id:'sat-v-2', artist:'Spacey Jane',           stage:'verizon', s:toMin(2,0,true),   e:toMin(2,45,true)  },
+    { id:'sat-s-2', artist:'Slayyyter',             stage:'snap',    s:toMin(2,30,true),  e:toMin(3,15,true)  },
+    { id:'sat-r-2', artist:'Geese',                 stage:'school',  s:toMin(3,0,true),   e:toMin(3,45,true)  },
+    { id:'sat-g-2', artist:'Jane Remover',          stage:'grove',   s:toMin(3,30,true),  e:toMin(4,15,true)  },
+    { id:'sat-s-3', artist:'Ravyn Lenae',           stage:'snap',    s:toMin(4,0,true),   e:toMin(4,45,true)  },
+    { id:'sat-v-3', artist:'Wet Leg',               stage:'verizon', s:toMin(4,45,true),  e:toMin(5,30,true)  },
+    { id:'sat-g-3', artist:'Snow Strippers',        stage:'grove',   s:toMin(4,45,true),  e:toMin(5,30,true)  },
+    { id:'sat-s-4', artist:'Blood Orange',          stage:'snap',    s:toMin(5,30,true),  e:toMin(6,30,true)  },
+    { id:'sat-s-5', artist:'Major Lazer',           stage:'snap',    s:toMin(6,30,true),  e:toMin(7,30,true)  },
+    { id:'sat-v-4', artist:'Kali Uchis',            stage:'verizon', s:toMin(7,30,true),  e:toMin(8,30,true)  },
+    { id:'sat-g-4', artist:'Amyl & the Sniffers',   stage:'grove',   s:toMin(7,30,true),  e:toMin(8,30,true)  },
+    { id:'sat-v-5', artist:'Stray Kids',            stage:'verizon', s:toMin(8,30,true),  e:toMin(10,0,true)  },
+  ],
+  sun: [
+    { id:'sun-r-1', artist:'Between Friends',       stage:'school',  s:toMin(12,30,true), e:toMin(1,15,true)  },
+    { id:'sun-g-1', artist:'Hemlocke Springs',      stage:'grove',   s:toMin(1,30,true),  e:toMin(2,15,true)  },
+    { id:'sun-s-1', artist:'Rachel Chinouriri',     stage:'snap',    s:toMin(1,0,true),   e:toMin(1,45,true)  },
+    { id:'sun-r-2', artist:'Holly Humberstone',     stage:'school',  s:toMin(2,0,true),   e:toMin(2,45,true)  },
+    { id:'sun-s-2', artist:'Slayyyter',             stage:'snap',    s:toMin(2,0,true),   e:toMin(2,45,true)  },
+    { id:'sun-v-1', artist:'Between Friends',       stage:'verizon', s:toMin(2,30,true),  e:toMin(3,15,true)  },
+    { id:'sun-v-2', artist:'Holly Humberstone',     stage:'verizon', s:toMin(3,15,true),  e:toMin(4,0,true)   },
+    { id:'sun-g-2', artist:'Geese',                 stage:'grove',   s:toMin(3,30,true),  e:toMin(4,15,true)  },
+    { id:'sun-v-3', artist:'Japanese Breakfast',    stage:'verizon', s:toMin(4,0,true),   e:toMin(4,45,true)  },
+    { id:'sun-g-3', artist:'Clipse',                stage:'grove',   s:toMin(5,45,true),  e:toMin(6,45,true)  },
+    { id:'sun-s-3', artist:'Hot Mulligan',          stage:'snap',    s:toMin(6,15,true),  e:toMin(7,15,true)  },
+    { id:'sun-v-4', artist:'Dominic Fike',          stage:'verizon', s:toMin(6,45,true),  e:toMin(7,45,true)  },
+    { id:'sun-g-4', artist:'JENNIE',                stage:'grove',   s:toMin(7,45,true),  e:toMin(8,45,true)  },
+    { id:'sun-s-4', artist:'Freddie Gibbs & Alchemist', stage:'snap', s:toMin(7,45,true), e:toMin(8,45,true)  },
+    { id:'sun-v-5', artist:'A$AP Rocky',            stage:'verizon', s:toMin(8,45,true),  e:toMin(10,0,true)  },
+  ],
 };
+
+// Sort each day chronologically
+['fri','sat','sun'].forEach(d => SCHEDULES[d].sort((a,b) => a.s !== b.s ? a.s-b.s : a.artist.localeCompare(b.artist)));
 
 const ALL_SETS = {};
-['fri','sat','sun'].forEach(day => {
-  Object.keys(SCHEDULES[day]).forEach(stageKey => {
-    SCHEDULES[day][stageKey].forEach(s => { 
-      ALL_SETS[s.id] = {...s, day}; 
-    });
-  });
-});
+['fri','sat','sun'].forEach(day => SCHEDULES[day].forEach(s => { ALL_SETS[s.id] = {...s, day}; }));
 
-const stageOfId = id => id.includes('-v-')?'verizon':id.includes('-g-')?'grove':id.includes('-s-')?'snap':'school';
-
-const START_HOUR = 12, END_HOUR = 22, TOTAL_MIN = (END_HOUR - START_HOUR) * 60;
-const fmt = m => { const t=m+START_HOUR*60; let h=Math.floor(t/60),mn=t%60; const ap=h>=12?'p':'a'; if(h>12)h-=12; if(h===0)h=12; return `${h}:${mn.toString().padStart(2,'0')}${ap}`; };
+const START_HOUR = 12;
+const fmt = m => {
+  const t = m + START_HOUR * 60;
+  let h = Math.floor(t/60), mn = t%60;
+  const ap = h >= 12 ? 'p' : 'a';
+  if (h > 12) h -= 12;
+  if (h === 0) h = 12;
+  return `${h}:${mn.toString().padStart(2,'0')}${ap}`;
+};
 
 // ── STATE ──
-let myName = '';
-let myPicks = new Set();
-let allUsers = {};
-let unsubscribe = null;
-let toastTimer = null;
+let myName = '', myPicks = new Set(), allUsers = {}, unsubscribe = null, toastTimer = null;
 
-// ── SYNC DOT ──
 const syncDot = document.getElementById('syncDot');
-const setSyncing = (v) => { syncDot.className = v ? 'syncing' : ''; };
-const setError = () => { syncDot.className = 'error'; };
+const setSyncing = v => syncDot.className = v ? 'syncing' : '';
+const setError = () => syncDot.className = 'error';
+const sanitize = name => name.replace(/[.#$\[\]\/]/g, '_');
 
-// ── FIREBASE HELPERS ──
-function sanitizeName(name) { return name.replace(/[.#$\[\]\/]/g, '_'); }
-
+// ── FIREBASE ──
 async function saveMyPicks() {
   setSyncing(true);
-  try {
-    const key = sanitizeName(myName);
-    await set(ref(db, `users/${key}`), { name: myName, picks: [...myPicks] });
-  } catch(e) { setError(); console.error(e); }
+  try { await set(ref(db, `users/${sanitize(myName)}`), { name: myName, picks: [...myPicks] }); }
+  catch(e) { setError(); }
   setSyncing(false);
 }
 
 function subscribeToUsers() {
   if (unsubscribe) unsubscribe();
-  const usersRef = ref(db, 'users');
-  unsubscribe = onValue(usersRef, snapshot => {
-    const data = snapshot.val() || {};
+  unsubscribe = onValue(ref(db, 'users'), snap => {
+    const data = snap.val() || {};
     allUsers = {};
-    Object.values(data).forEach(u => { if (u && u.name) allUsers[u.name] = u.picks || []; });
-    refreshGoingCounts();
+    Object.values(data).forEach(u => { if (u?.name) allUsers[u.name] = u.picks || []; });
+    refreshCounts();
     updatePeopleBadge();
     if (document.getElementById('panel-people').classList.contains('active')) renderPeople();
-  }, err => { setError(); console.error(err); });
+  }, () => setError());
 }
 
 // ── ONBOARDING ──
-document.getElementById('nameInput').addEventListener('keydown', e => { if(e.key==='Enter') joinFestival(); });
+document.getElementById('nameInput').addEventListener('keydown', e => { if (e.key==='Enter') joinFestival(); });
 
 async function joinFestival() {
   const val = document.getElementById('nameInput').value.trim();
   if (!val) { document.getElementById('nameInput').focus(); return; }
   myName = val;
-
   setSyncing(true);
   try {
-    const snap = await get(ref(db, `users/${sanitizeName(myName)}`));
+    const snap = await get(ref(db, `users/${sanitize(myName)}`));
     if (snap.exists() && snap.val().picks) myPicks = new Set(snap.val().picks);
-  } catch(e) { console.error(e); }
+  } catch(e) {}
   setSyncing(false);
 
   document.getElementById('onboarding').classList.add('hidden');
@@ -513,13 +509,13 @@ async function joinFestival() {
   document.getElementById('userBadgeName').textContent = myName;
   document.getElementById('mySchedName').textContent = myName;
 
-  buildAllGrids();
+  buildAllLists();
   updateMyBadge();
   subscribeToUsers();
 }
 window.joinFestival = joinFestival;
 
-window.changeUser = function() {
+window.changeUser = () => {
   if (unsubscribe) unsubscribe();
   myName = ''; myPicks = new Set();
   document.getElementById('nameInput').value = '';
@@ -528,7 +524,7 @@ window.changeUser = function() {
 };
 
 // ── TABS ──
-window.switchTab = function(id, btn) {
+window.switchTab = (id, btn) => {
   document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('panel-'+id).classList.add('active');
@@ -537,200 +533,210 @@ window.switchTab = function(id, btn) {
   if (id === 'mine') renderMine();
 };
 
-// ── BUILD GRIDS ──
-function buildGrid(day) {
-  const container = document.getElementById('grid-'+day);
-  const hoursRow = document.getElementById('hours-'+day);
-  hoursRow.innerHTML = '';
-  for (let h = START_HOUR; h < END_HOUR; h++) {
-    const c = document.createElement('div');
-    c.className = 'hour-cell';
-    c.textContent = h===12?'12p':h>12?`${h-12}p`:`${h}a`;
-    hoursRow.appendChild(c);
-  }
-  container.querySelectorAll('.stage-row').forEach(r => r.remove());
+// ── BUILD LIST ──
+function buildList(day) {
+  const container = document.getElementById('list-'+day);
+  container.innerHTML = '';
+  const sets = SCHEDULES[day];
 
-  ['verizon','grove','snap','school'].forEach(stageKey => {
-    const sm = STAGES[stageKey];
-    const sets = SCHEDULES[day][stageKey] || [];
-    const row = document.createElement('div');
-    row.className = 'stage-row';
-    const lbl = document.createElement('div');
-    lbl.className = 'stage-label';
-    lbl.innerHTML = `<div class="stage-name" style="color:var(--${sm.cls})">${sm.label}</div>`;
-    row.appendChild(lbl);
-    const track = document.createElement('div');
-    track.className = 'stage-track';
-    sets.forEach(set => {
-      const pL = (set.s / TOTAL_MIN) * 100;
-      const pW = ((set.e - set.s) / TOTAL_MIN) * 100;
-      const block = document.createElement('div');
-      block.className = `set ${sm.cls}${myPicks.has(set.id)?' mine':''}`;
-      block.id = 'set-'+set.id;
-      block.style.left = pL+'%';
-      block.style.width = pW+'%';
-      block.onclick = () => toggleSet(set.id);
-      const goers = countGoers(set.id);
-      block.innerHTML = `
-        <div class="set-artist">${set.artist}</div>
-        <div class="set-time">${fmt(set.s)}–${fmt(set.e)}</div>
-        <div class="set-going" id="going-${set.id}">${goers>0?goers+' going':''}</div>`;
-      track.appendChild(block);
+  // group by start time
+  const groups = {};
+  sets.forEach(set => {
+    const key = set.s;
+    if (!groups[key]) groups[key] = [];
+    groups[key].push(set);
+  });
+
+  Object.keys(groups).sort((a,b) => a-b).forEach(timeKey => {
+    const timeBlock = document.createElement('div');
+    timeBlock.className = 'time-block';
+
+    const timeLabel = document.createElement('div');
+    timeLabel.className = 'time-label';
+    timeLabel.textContent = fmt(Number(timeKey));
+    timeBlock.appendChild(timeLabel);
+
+    groups[timeKey].forEach(set => {
+      timeBlock.appendChild(buildSetRow(set));
     });
-    row.appendChild(track);
-    container.appendChild(row);
+
+    container.appendChild(timeBlock);
   });
 }
 
-function buildAllGrids() { buildGrid('fri'); buildGrid('sat'); buildGrid('sun'); }
+function buildSetRow(set) {
+  const sm = STAGES[set.stage];
+  const isMine = myPicks.has(set.id);
+  const goers = countGoers(set.id);
+
+  const row = document.createElement('div');
+  row.className = 'set-row' + (isMine ? ' mine' : '');
+  row.id = 'set-'+set.id;
+  row.onclick = () => toggleSet(set.id);
+
+  row.innerHTML = `
+    <div class="set-stage-bar" style="background:${sm.color}"></div>
+    <div class="set-main">
+      <div class="set-artist-name">${set.artist}</div>
+      <div class="set-meta">
+        <span class="set-stage-pill" style="background:${sm.color}">${sm.label}</span>
+        <span class="set-time-text">${fmt(set.s)}–${fmt(set.e)}</span>
+        <span class="set-going-text${goers>0?' has-goers':''}" id="going-${set.id}">${goers>0 ? goers+' going' : ''}</span>
+      </div>
+    </div>
+    <div class="set-check">
+      <div class="check-icon">
+        <svg width="12" height="10" viewBox="0 0 12 10" fill="none">
+          <path d="M1 5l3.5 3.5L11 1" stroke="#0c0c0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>`;
+  return row;
+}
+
+function buildAllLists() { buildList('fri'); buildList('sat'); buildList('sun'); }
 
 // ── TOGGLE ──
 async function toggleSet(id) {
   const wasGoing = myPicks.has(id);
   wasGoing ? myPicks.delete(id) : myPicks.add(id);
-  const block = document.getElementById('set-'+id);
-  if (block) block.classList.toggle('mine', !wasGoing);
-  updateMyBadge();
+
+  const row = document.getElementById('set-'+id);
+  if (row) row.classList.toggle('mine', !wasGoing);
+
   allUsers[myName] = [...myPicks];
-  refreshGoingCounts();
+  updateMyBadge();
+  refreshCounts();
+
   const set = ALL_SETS[id];
-  showToast(wasGoing ? `Removed <span class="tn">${set.artist}</span>` : `Added <span class="tn">${set.artist}</span>`);
+  showToast(wasGoing
+    ? `Removed <span class="tn">${set.artist}</span>`
+    : `Added <span class="tn">${set.artist}</span>`);
   await saveMyPicks();
 }
 window.toggleSet = toggleSet;
 
-function countGoers(setId) {
-  return Object.values(allUsers).filter(picks => Array.isArray(picks) && picks.includes(setId)).length;
+function countGoers(id) {
+  return Object.values(allUsers).filter(p => Array.isArray(p) && p.includes(id)).length;
 }
 
-function refreshGoingCounts() {
+function refreshCounts() {
   Object.keys(ALL_SETS).forEach(id => {
     const el = document.getElementById('going-'+id);
-    if (el) { const g=countGoers(id); el.textContent = g>0?g+' going':''; }
-    const block = document.getElementById('set-'+id);
-    if (block) block.classList.toggle('mine', myPicks.has(id));
+    if (el) {
+      const g = countGoers(id);
+      el.textContent = g > 0 ? g+' going' : '';
+      el.className = 'set-going-text' + (g > 0 ? ' has-goers' : '');
+    }
+    const row = document.getElementById('set-'+id);
+    if (row) row.classList.toggle('mine', myPicks.has(id));
   });
 }
 
-function updateMyBadge() {
-  document.getElementById('myBadge').textContent = myPicks.size;
-}
-
-function updatePeopleBadge() {
-  document.getElementById('peopleBadge').textContent = Object.keys(allUsers).length;
-}
-
-// ── TOAST NOTIFICATIONS ──
-function showToast(html) {
-  const toast = document.getElementById('toast');
-  toast.innerHTML = html;
-  toast.classList.add('show');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
-}
-
-// ── RENDER MY SCHEDULE PANELS ──
+// ── MY SCHEDULE ──
 function renderMine() {
-  const container = document.getElementById('mySchedBody');
+  const container = document.getElementById('myList');
   container.innerHTML = '';
-
   if (myPicks.size === 0) {
-    container.innerHTML = `<div class="my-empty">Your schedule is empty.<br>Tap sets on the daily schedules to add them!</div>`;
+    container.innerHTML = '<div class="my-empty">No sets added yet.<br>Tap any set to add it.</div>';
     return;
   }
-
-  const days = { fri: 'Friday June 5', sat: 'Saturday June 6', sun: 'Sunday June 7' };
-  
-  Object.keys(days).forEach(dayKey => {
-    const dayPicks = [...myPicks]
-      .map(id => ALL_SETS[id])
-      .filter(s => s && s.day === dayKey)
-      .sort((a, b) => a.s - b.s);
-
-    if (dayPicks.length === 0) return;
-
-    const group = document.createElement('div');
-    group.className = 'my-day-group';
-    group.innerHTML = `<div class="my-day-label">${days[dayKey]}</div>`;
-
-    dayPicks.forEach(set => {
-      const stageKey = stageOfId(set.id);
-      const stageMeta = STAGES[stageKey];
+  const byDay = { fri:[], sat:[], sun:[] };
+  myPicks.forEach(id => { const s=ALL_SETS[id]; if(s) byDay[s.day].push(s); });
+  ['fri','sat','sun'].forEach(d => byDay[d].sort((a,b)=>a.s-b.s));
+  const labels = { fri:'Friday June 5', sat:'Saturday June 6', sun:'Sunday June 7' };
+  ['fri','sat','sun'].forEach(d => {
+    if (!byDay[d].length) return;
+    const label = document.createElement('div');
+    label.className = 'my-day-label';
+    label.textContent = labels[d];
+    container.appendChild(label);
+    byDay[d].forEach(set => {
+      const sm = STAGES[set.stage];
       const row = document.createElement('div');
       row.className = 'my-set-row';
       row.innerHTML = `
-        <div class="my-set-bar" style="background:${stageMeta.color}"></div>
-        <div class="my-set-info">
-          <div class="my-set-artist">${set.artist}</div>
-          <div class="my-set-meta">${fmt(set.s)} – ${fmt(set.e)} &nbsp;·&nbsp; ${stageMeta.label}</div>
+        <div class="my-bar" style="background:${sm.color}"></div>
+        <div class="my-info">
+          <div class="my-artist">${set.artist}</div>
+          <div class="my-meta">${sm.label} · ${fmt(set.s)}–${fmt(set.e)}</div>
         </div>
-        <button class="my-set-remove" onclick="toggleSet('${set.id}').then(() => renderMine())">REMOVE</button>
-      `;
-      group.appendChild(row);
+        <button class="my-remove" onclick="toggleSet('${set.id}').then(()=>renderMine())">×</button>`;
+      container.appendChild(row);
     });
-    container.appendChild(group);
   });
 }
+window.renderMine = renderMine;
 
-// ── RENDER PEOPLE PANEL ──
+// ── PEOPLE ──
 function renderPeople() {
-  const grid = document.getElementById('peopleGrid');
+  const list = document.getElementById('peopleList');
   const header = document.getElementById('peopleHeader');
-  grid.innerHTML = '';
+  list.innerHTML = '';
 
-  const users = Object.keys(allUsers).sort();
-  header.textContent = `Friends Driving Sets (${users.length})`;
+  const names = Object.keys(allUsers).sort((a,b) => a===myName?-1:b===myName?1:a.localeCompare(b));
+  header.textContent = `${names.length} attendee${names.length!==1?'s':''}`;
 
-  if (users.length === 0) {
-    grid.innerHTML = `<div class="my-empty" style="grid-column: 1/-1">No one has joined yet. Share the link!</div>`;
+  if (names.length === 0) {
+    list.innerHTML = '<div class="my-empty">No one yet — share the link!</div>';
     return;
   }
 
-  users.forEach(name => {
+  names.forEach(name => {
     const isMe = name === myName;
     const picks = allUsers[name] || [];
+    const sortedPicks = picks.map(id=>ALL_SETS[id]).filter(Boolean)
+      .sort((a,b) => {const w={fri:0,sat:1,sun:2}; return w[a.day]!==w[b.day]?w[a.day]-w[b.day]:a.s-b.s;});
+
     const card = document.createElement('div');
-    card.className = `person-card${isMe ? ' is-me' : ''}`;
+    card.className = 'person-card' + (isMe?' is-me':'');
 
-    let setsHtml = '';
-    if (picks.length === 0) {
-      setsHtml = `<div class="person-empty">No sets added yet.</div>`;
+    const headerEl = document.createElement('div');
+    headerEl.className = 'person-card-header';
+    headerEl.innerHTML = `
+      <div class="person-card-name">${name}</div>
+      ${isMe?'<span class="you-tag">YOU</span>':''}
+      <div class="person-count">${picks.length} set${picks.length!==1?'s':''}</div>
+      <div class="person-chevron">▾</div>`;
+    headerEl.onclick = () => { card.classList.toggle('open'); };
+
+    const setsEl = document.createElement('div');
+    setsEl.className = 'person-sets-list';
+
+    if (sortedPicks.length === 0) {
+      setsEl.innerHTML = '<div class="person-empty">No sets added yet.</div>';
     } else {
-      // Sort chronologically across all weekend days
-      const sortedPicks = picks
-        .map(id => ALL_SETS[id])
-        .filter(Boolean)
-        .sort((a, b) => {
-          const dayWeight = { fri: 0, sat: 1, sun: 2 };
-          if (dayWeight[a.day] !== dayWeight[b.day]) return dayWeight[a.day] - dayWeight[b.day];
-          return a.s - b.s;
-        });
-
+      const dayNames = {fri:'FRI',sat:'SAT',sun:'SUN'};
       sortedPicks.forEach(set => {
-        const stageKey = stageOfId(set.id);
-        const stageMeta = STAGES[stageKey];
-        setsHtml += `
-          <div class="person-set-item">
-            <div class="ps-dot" style="background:${stageMeta.color}"></div>
-            <div class="ps-info">
-              <div class="ps-artist">${set.artist}</div>
-              <div class="ps-meta">${set.day.toUpperCase()} ${fmt(set.s)} &middot; ${stageMeta.label}</div>
-            </div>
-          </div>
-        `;
+        const sm = STAGES[set.stage];
+        const item = document.createElement('div');
+        item.className = 'person-set-item';
+        item.innerHTML = `
+          <div class="ps-dot" style="background:${sm.color}"></div>
+          <div class="ps-artist">${set.artist}</div>
+          <div class="ps-meta">${dayNames[set.day]} ${fmt(set.s)}</div>`;
+        setsEl.appendChild(item);
       });
     }
 
-    card.innerHTML = `
-      <div class="person-name">
-        ${name} ${isMe ? '<span class="you-tag">YOU</span>' : ''}
-      </div>
-      <div class="person-sets">
-        ${setsHtml}
-      </div>
-    `;
-    grid.appendChild(card);
+    card.appendChild(headerEl);
+    card.appendChild(setsEl);
+    // auto-open your own card
+    if (isMe) card.classList.add('open');
+    list.appendChild(card);
   });
+}
+
+// ── BADGES ──
+function updateMyBadge() { document.getElementById('myBadge').textContent = myPicks.size; }
+function updatePeopleBadge() { document.getElementById('peopleBadge').textContent = Object.keys(allUsers).length || '0'; }
+
+// ── TOAST ──
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerHTML = msg; t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 </script>
 </body>
