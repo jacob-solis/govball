@@ -233,6 +233,19 @@ h1 {
 .my-remove:active { color: var(--accent2); }
 .my-empty { padding: 60px 16px; text-align: center; font-family: 'Space Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 0.08em; line-height: 2; }
 
+/* avatar circles for who else is going */
+.my-avatars { display: flex; align-items: center; flex-shrink: 0; padding-right: 4px; }
+.my-avatars .avatar {
+  width: 24px; height: 24px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Space Mono', monospace; font-size: 10px; font-weight: 700;
+  color: var(--text); background: var(--surface2);
+  border: 1.5px solid var(--surface);
+  margin-left: -7px; flex-shrink: 0;
+}
+.my-avatars .avatar:first-child { margin-left: 0; }
+.my-avatars .avatar-more { background: var(--accent); color: var(--bg); font-size: 9px; }
+
 /* ── PEOPLE ── */
 .people-header-bar { padding: 16px 16px 12px; font-family: 'Space Mono', monospace; font-size: 9px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; }
 .people-list { padding: 0 16px 80px; display: flex; flex-direction: column; gap: 10px; }
@@ -496,6 +509,7 @@ function subscribeToUsers() {
     refreshCounts();
     updatePeopleBadge();
     if (document.getElementById('panel-people').classList.contains('active')) renderPeople();
+    if (document.getElementById('panel-mine').classList.contains('active')) renderMine();
   }, () => setError());
 }
 
@@ -664,12 +678,32 @@ function renderMine() {
       const sm = STAGES[set.stage];
       const row = document.createElement('div');
       row.className = 'my-set-row';
+
+      // who else (not me) is going to this set
+      const others = Object.keys(allUsers)
+        .filter(n => n !== myName && Array.isArray(allUsers[n]) && allUsers[n].includes(set.id))
+        .sort((a,b) => a.localeCompare(b));
+
+      const MAX_SHOWN = 4;
+      let avatarsHtml = '';
+      others.slice(0, MAX_SHOWN).forEach(n => {
+        const initial = n.trim().charAt(0).toUpperCase() || '?';
+        avatarsHtml += `<div class="avatar" title="${n}">${initial}</div>`;
+      });
+      if (others.length > MAX_SHOWN) {
+        avatarsHtml += `<div class="avatar avatar-more" title="${others.slice(MAX_SHOWN).join(', ')}">+${others.length - MAX_SHOWN}</div>`;
+      }
+      const avatarsBlock = others.length
+        ? `<div class="my-avatars" title="${others.join(', ')}">${avatarsHtml}</div>`
+        : '';
+
       row.innerHTML = `
         <div class="my-bar" style="background:${sm.color}"></div>
         <div class="my-info">
           <div class="my-artist">${set.artist}</div>
           <div class="my-meta">${sm.label} · ${fmt(set.s)}–${fmt(set.e)}</div>
         </div>
+        ${avatarsBlock}
         <button class="my-remove" onclick="toggleSet('${set.id}').then(()=>renderMine())">×</button>`;
       container.appendChild(row);
     });
